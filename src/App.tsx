@@ -1,5 +1,9 @@
+import { QueryClient, QueryClientProvider } from "react-query";
+
+export const queryClient = new QueryClient();
+
 function App() {
-  return <div className="h-4 w-4 bg-red-500"></div>;
+  return <QueryClientProvider client={queryClient}></QueryClientProvider>;
 }
 
 export default App;
