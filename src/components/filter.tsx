@@ -1,6 +1,32 @@
+import { useState } from "react";
 import Button from "./button";
+import { useQueryClient } from "react-query";
+import { ILocation } from "../types/location";
 
 const Filter = () => {
+  const [period, setPeriod] = useState<string>(); // morning, afternoon, evening
+  const [showCloseUnits, setShowCloseUnits] = useState(false);
+
+  const client = useQueryClient();
+
+  const handleSubmit = () => {
+    const data = client.getQueryData<{ locations: ILocation[] }>("locations");
+
+    if (!data?.locations) {
+      return;
+    }
+
+    let newLocations: ILocation[] = [];
+
+    if (showCloseUnits) {
+      newLocations = data?.locations.filter((location) => location.opened);
+    }
+
+    client.setQueryData<{ locations: ILocation[] }>("locations", {
+      locations: newLocations,
+    });
+  };
+
   return (
     <div className="px-5">
       <div className="rounded-lg border-solid border-brand-lightGrey border-2 p-5 border-opacity-35">
@@ -22,6 +48,8 @@ const Filter = () => {
                 name="period"
                 value="morning"
                 className="w-4"
+                checked={period === "morning"}
+                onChange={(e) => setPeriod(e.currentTarget.value)}
               />
               <label htmlFor="morning" className="text-brand-lightGrey">
                 Manhã
@@ -38,6 +66,8 @@ const Filter = () => {
                 name="period"
                 value="afternoon"
                 className="w-4"
+                checked={period === "afternoon"}
+                onChange={(e) => setPeriod(e.currentTarget.value)}
               />
               <label htmlFor="afternoon" className="text-brand-lightGrey">
                 Tarde
@@ -55,6 +85,8 @@ const Filter = () => {
                 name="period"
                 value="evening"
                 className="w-4"
+                checked={period === "evening"}
+                onChange={(e) => setPeriod(e.currentTarget.value)}
               />
               <label htmlFor="evening" className="text-brand-lightGrey">
                 Noite
@@ -72,20 +104,24 @@ const Filter = () => {
               name="showCloseUnits"
               id="showCloseUnits"
               className="w-4 h-4"
+              checked={showCloseUnits}
+              onChange={() => setShowCloseUnits((prev) => !prev)}
             />
             <label htmlFor="showCloseUnits" className="text-black">
-              Exibir unidades próximas
+              Exibir unidades fechadas
             </label>
           </div>
 
           <h3>
             Resultados encontrados:{" "}
-            <span className="font-semibold text-xl">0</span>
+            <span className="font-semibold text-xl"></span>
           </h3>
         </div>
 
         <div className="flex flex-col gap-3 mt-5">
-          <Button variant="primary">Encontrar unidade</Button>
+          <Button variant="primary" onClick={handleSubmit}>
+            Encontrar unidade
+          </Button>
           <Button variant="outlined">Limpar</Button>
         </div>
       </div>
