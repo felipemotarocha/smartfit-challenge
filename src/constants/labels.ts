@@ -49,7 +49,7 @@ export const LABELS: Label[] = [
         description: "Parcial",
       },
       {
-        url: "/forbidden-fountain.png",
+        url: "/not_allowed-fountain.png",
         alt: "Proibido",
         description: "Proibido",
       },
@@ -59,7 +59,7 @@ export const LABELS: Label[] = [
     description: "Vestiários",
     images: [
       {
-        url: "/required-lockerroom.png",
+        url: "/allowed-lockerroom.png",
         alt: "Liberado",
         description: "Liberado",
       },
@@ -69,7 +69,7 @@ export const LABELS: Label[] = [
         description: "Parcial",
       },
       {
-        url: "/forbidden-lockerroom.png",
+        url: "/closed-lockerroom.png",
         alt: "Fechado",
         description: "Fechado",
       },
